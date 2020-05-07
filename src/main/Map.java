@@ -59,7 +59,7 @@ public class Map {
         // Initiate browser engine to display the map.
         Engine engine =
                 Engine.newInstance(EngineOptions.newBuilder(RenderingMode.HARDWARE_ACCELERATED)
-                                                .licenseKey("6P830J66YAKYA3V12RFVTC7TX0KBBSJ440HWFG0WKYPI6LQ4584S8KXMI5KKHSID57O4")
+                                                .licenseKey("YOUR_LICENSE_KEY")
                                                 .build());
         Browser browser = engine.newBrowser();
         browser.navigation().loadUrl(new File("map.html").getAbsolutePath()); // Locate map.html file to load into the browser.
