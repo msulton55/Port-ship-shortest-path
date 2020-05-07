@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Directions Service</title>
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+         * element that contains the map. */
+        #map {
+            height: 100%;
+        }
+        /* Optional: Makes the sample page fill the window. */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+
+    // The main javascript function to call Google Maps API to draw the map and draw the polyline into the browser
+    // in Java side. This javascript is likely "client-side".
+    function initMap() {
+
+        // Instantiate default maps.
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 4,
+            center: {lat: 0.7893, lng: 113.9213},
+            mapTypeId: 'terrain'
+        });
+
+        // Put all shortest path resulted by Dijkstra Algorithm from Java side.
+        var seaPortPlanCoordinates = [];
+        for (var i = 0; i < window.java.getNodeLength(); i++) {
+            seaPortPlanCoordinates.push(new google.maps.LatLng(
+                window.java.getNodeLat(i),
+                window.java.getNodeLon(i),
+            ));
+        }
+
+        // Instantiate the polyline to draw the line in the map.
+        var seaPath = new google.maps.Polyline({
+            path: seaPortPlanCoordinates,
+            geodesic: true,
+            strokeColor: '#ff0000',
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+        });
+
+        seaPath.setMap(map); // Dont forget to apply the line to the map.
+
+        // Instantiate the marker on top of the line to give notion to every nodes.
+        for (var i = 0; i < window.java.getNodeLength(); i++) {
+            var marker = new google.maps.Marker({
+                position: {lat: window.java.getNodeLat(i), lng: window.java.getNodeLon(i)},
+                title: window.java.getNodeId(i),
+            });
+            marker.setMap(map);
+        }
+    }
+
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhQGujSKsUAceJNhdMK2nQHl9rvoPdJNI&callback=initMap">
+</script>
+</body>
+</html>
